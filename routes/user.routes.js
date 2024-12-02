@@ -4,9 +4,9 @@ const user = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const admin = require('../firebase.js');
+const Admin = require('firebase-admin');
 
-
-
+const db = Admin.firestore();
 
 router.get("/test", (req, res) => {
     res.send("Test route");
@@ -22,6 +22,14 @@ router.get("/test", (req, res) => {
 //     });
 
 // });
+
+// getAlluser | LOCAL
+// router.get("/register", async (req, res) => {
+//     const allUser = await user.find();
+//     res.status(200).json({ allUser });
+// });
+
+
 // user registration api | FIREBASE
 router.post('/register', async (req, res) => {
     const { name, email, password, sex } = req.body;
@@ -61,13 +69,26 @@ router.post('/register', async (req, res) => {
     // }
 });
 
+router.get("/register", async (req, res) => {   
+    try {
+        // Fetch users from the Firestore 'users' collection
+        const usersSnapshot = await db.collection('users').get();
 
+        // Format the data
+        const users = usersSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
 
-// getAlluser 
-router.get("/register", async (req, res) => {
-    const allUser = await user.find();
-    res.status(200).json({ allUser });
+        // Return the users as a JSON response
+        res.status(200).json({ users });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Failed to fetch data' });
+    }
 });
+
+
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
