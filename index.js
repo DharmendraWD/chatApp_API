@@ -10,7 +10,9 @@ connectDB();
 
 // user registration api 
 app.use("/api/users", userRouter);  
-
+app.get("/", (req, res) => {
+    res.send("Hello World");    
+})
 
 
 
