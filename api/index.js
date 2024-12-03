@@ -3,17 +3,19 @@ const app = express();
 const connectDB = require("../config/db");
 const userRouter = require("../routes/user.routes");
 require("dotenv").config();
-
+const cookieParser = require("cookie-parser");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const auth = require("../middlewares/auth");
+
 
 connectDB();
-
+app.use(cookieParser());
 // User registration API
 app.use("/api/users", userRouter);
 
 // Root route
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     res.send("Hello World");
 });
 

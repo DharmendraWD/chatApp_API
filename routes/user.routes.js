@@ -5,11 +5,12 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const admin = require('../firebase.js');
 const Admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 
 const db = Admin.firestore();
 
 router.get("/test", (req, res) => {
-    res.send("Test route");
+    res.send("test");
 });
 
 // user registration api | LOCAL
@@ -29,26 +30,29 @@ router.get("/test", (req, res) => {
 //     res.status(200).json({ allUser });
 // });
 
-// LOGIN API | LOCAL 
-// router.post("/login", async (req, res) => {
+// LOgin api | Local 
+// router.post('/login', async (req, res) => {
 //     const { email, password } = req.body;
-//     const userFound = await user.findOne({ email });
-//     if (userFound) {
-//         bcrypt.compare(password, userFound.password, function (err, result) {
-//             if (result) {
-//                 res.status(200).json({ userFound });
-//             } else {
-//                 res.status(400).json({ message: "Invalid credentials" });
-//             }
-//         });
-//     } else {
-//         res.status(400).json({ message: "User not found" });
+//     const filteredUser = await user.findOne({ email });
+
+//     if (!filteredUser) {
+//         return res.status(400).json({ message: "Invalid credentials" });
 //     }
-// }); 
+
+//     const isMatch = bcrypt.compareSync(password, filteredUser.password);
+//     if (!isMatch) {
+//         return res.status(400).json({ message: "Invalid credentials" });
+//     }
 
 
-// FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE
+//     res.send("logged in")
+// })
+
+
+
+// FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE    FIREBASE
 // user registration api | FIREBASE
+
 router.post('/register', async (req, res) => {
     const { name, email, password, sex } = req.body;
 
@@ -107,6 +111,7 @@ router.get("/register", async (req, res) => {
     }
 });
 
+
 // login api | FIREBASE
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -133,6 +138,16 @@ router.post('/login', async (req, res) => {
             if (result) {
                 // Password matches, login success
                 res.status(200).json({ message: 'Login successful', userId: userDoc.id });
+
+                const token = jwt.sign({
+                    userId: filteredUser._id,
+                    email: filteredUser.email,
+                    username: filteredUser.username
+                },
+                    process.env.JWT_SECRET,)
+
+                res.cookie('token', token);
+
             } else {
                 // Password doesn't match
                 res.status(400).json({ error: 'Invalid password' });
@@ -144,7 +159,6 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 
 
 module.exports = router;
