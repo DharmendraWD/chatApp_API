@@ -5,8 +5,8 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const auth = require("../middlewares/auth");
 
+const path = require('path');
 const userRouter = require("../routes/api.routes");
 const EJSuserRoutes = require("../routes/user.routes");
 
@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-
+app.set('views', path.join(__dirname, 'views'));
 
 
 // User registration API
