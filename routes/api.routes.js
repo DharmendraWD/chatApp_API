@@ -31,29 +31,29 @@ router.get("/test", (req, res) => {
 // });
 
 // LOgin api | Local 
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const filteredUser = await user.findOne({ email });
+// router.post('/login', async (req, res) => {
+//     const { email, password } = req.body;
+//     const filteredUser = await user.findOne({ email });
 
-    if (!filteredUser) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
+//     if (!filteredUser) {
+//         return res.status(400).json({ message: "Invalid credentials" });
+//     }
 
-    const isMatch = bcrypt.compareSync(password, filteredUser.password);
-    if (!isMatch) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
-    const token = jwt.sign({
-                        userId: filteredUser._id,
-                        email: filteredUser.email,
-                        username: filteredUser.username
-                    },
-                        process.env.JWT_SECRET,)
+//     const isMatch = bcrypt.compareSync(password, filteredUser.password);
+//     if (!isMatch) {
+//         return res.status(400).json({ message: "Invalid credentials" });
+//     }
+//     const token = jwt.sign({
+//                         userId: filteredUser._id,
+//                         email: filteredUser.email,
+//                         username: filteredUser.username
+//                     },
+//                         process.env.JWT_SECRET,)
 
-                    res.cookie('token', token);
+//                     res.cookie('token', token);
 
-    res.send("logged in")
-})
+//     res.send("logged in")
+// })
 
 
 
@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 // user registration api | FIREBASE
 
 router.post('/register', async (req, res) => {
-    const { name, email, password, sex } = req.body;
+    const { fname, lname, email, password, sex, dob } = req.body;
 
         bcrypt.hash(password, saltRounds, async function (err, hash) {
             try {
@@ -69,10 +69,12 @@ router.post('/register', async (req, res) => {
                 const userRef = admin.firestore().collection('users').doc();
 
                 await userRef.set({
-                    name: name,
+                    fname: fname,
+                    lname: lname,
                     email: email,
                     password: hash,
-                    sex: sex
+                    sex: sex,
+                    dob: dob
                 });
 
                 res.status(201).json({ message: 'User registered successfully' });
@@ -147,9 +149,7 @@ router.post('/login', async (req, res) => {
                 res.status(200).json({ message: 'Login successful', userId: userDoc.id });
 
                 const token = jwt.sign({
-                    userId: filteredUser._id,
-                    email: filteredUser.email,
-                    username: filteredUser.username
+                    user: userDoc
                 },
                     process.env.JWT_SECRET,)
 

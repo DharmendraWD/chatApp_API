@@ -11,11 +11,14 @@ const jwt = require('jsonwebtoken');
 
 
 router.get('/',  auth, (req, res) => {
-    res.render("index")
+    res.render("homepage")
 })
 
 router.get("/register", async (req, res) => {
-   res.render("register")
+   return res.render("register")
+});
+router.get("/login", async (req, res) => {
+ return  res.render("login")
 });
 
 // login \ firebase 
@@ -43,17 +46,16 @@ router.post('/login', async (req, res) => {
 
             if (result) {
                 // Password matches, login success
-                res.status(200).json({ message: 'Login successful', userId: userDoc.id });
-
+                    
                 const token = jwt.sign({
-                    userId: filteredUser._id,
-                    email: filteredUser.email,
-                    username: filteredUser.username
+                    userId: userDoc.id,
+                    email: userDoc.email,
+                    username: userDoc.username
                 },
                     process.env.JWT_SECRET,)
 
                 res.cookie('token', token);
-
+                return res.redirect('/');
             } else {
                 // Password doesn't match
                 res.status(400).json({ error: 'Invalid password' });
@@ -87,4 +89,16 @@ router.get("/register", async (req, res) => {
     }
 });
 
+
+// my profile 
+router.get('/my-profile', auth, async (req, res) => {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const userDoc = await admin.firestore().collection('users').doc(decoded.userId).get();
+    const user = userDoc.data();
+
+    console.log(user)
+    res.render("myprofile", { user: user })
+})
 module.exports = router;
