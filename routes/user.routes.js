@@ -108,57 +108,42 @@ router.get("/register", async (req, res) => {
 });
 
 // login api | FIREBASE
-// router.post("/login", async (req, res) => {
-//     const { email, password } = req.body;
-// console.log(email, password)
-//     try {
-//         // Step 1: Check if the user exists in Firestore by email
-//         const userRef = db.collection('users').doc(email);
-//         const userDoc = await userRef.get();
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
-//         if (!userDoc.exists) {
-//             return res.status(400).json({ message: "User not found in the database" });
-//         }
+    try {
+        // Check if the email exists in Firestore
+        const userSnapshot = await admin.firestore().collection('users').where('email', '==', email).get();
 
-//         const hash = userDoc.data().password;
+        if (userSnapshot.empty) {
+            return res.status(400).json({ error: 'Email not found' });
+        }
 
-//         // Step 2: Compare the provided password to the stored hash
-//         bcrypt.compare(password, hash, function (err, result) {
-//             if (!result) {
-//                 return res.status(401).json({ message: "Invalid password" });
-//             }
+        // Assuming email is unique, we can get the first document
+        const userDoc = userSnapshot.docs[0];
+        const user = userDoc.data();
 
-//             // Step 3: If the password is correct, proceed to authenticate with Firebase Authentication
-//             admin.auth()
-//                 .signInWithEmailAndPassword(email, password)
-//                 .then((userCredential) => {
-//                     const user = userCredential.user;
+        // Compare the provided password with the stored hashed password
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (err) {
+                console.error('Error comparing passwords:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
 
-//                     // Return user info if login is successful
-//                     res.status(200).json({
-//                         uid: user.uid,
-//                         email: user.email
-//                     });
-//                 })
-//                 .catch((error) => {
-//                     // Handle authentication errors (wrong password, etc.)
-//                     const errorCode = error.code;
-//                     const errorMessage = error.message;
+            if (result) {
+                // Password matches, login success
+                res.status(200).json({ message: 'Login successful', userId: userDoc.id });
+            } else {
+                // Password doesn't match
+                res.status(400).json({ error: 'Invalid password' });
+            }
+        });
 
-//                     res.status(400).json({
-//                         message: errorMessage,
-//                         code: errorCode
-//                     });
-//                 });
-
-//         });
-
-//     } catch (err) {
-//         console.error("Error during login:", err);
-//         res.status(500).json({ message: "Internal server error" });
-//     }
-// });
-
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 
