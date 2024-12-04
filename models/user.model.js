@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     password: String,
     dob: String,
     sex: String,
+    address: String,
+    mobnumber: Number,
+    website: String,
+    profession:String,
+    hobby: String,
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });

@@ -7,7 +7,11 @@ function auth(req, res, next) {
 console.log(token)
     if (!token) {
         // return res.status(401).json({ message: "Unauthorized" });
-       return res.render('index');
+
+        if (req.url =="/edit"){
+            return res.render("login");
+        }
+        return res.render('index');
     }
 
 

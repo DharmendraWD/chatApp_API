@@ -1,0 +1,53 @@
+<nav class="flex items-center bg-gray-800 p-3 flex-wrap">
+    <a href="#" class="p-2 mr-4 inline-flex items-center">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-current text-white h-8 w-8 mr-2">
+            <path
+                d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
+        </svg>
+        <span class="text-xl text-white font-bold uppercase tracking-wide">Talwind CSS</span>
+    </a>
+    <button
+        class="text-white inline-flex p-3 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler"
+        data-target="#navigation">
+        <i class="material-icons">menu</i>
+    </button>
+    <div class="hidden top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto" id="navigation">
+        <div
+            class="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start  flex flex-col lg:h-auto">
+            <a href="#"
+                class="lg:inline-flex lg:w-auto w-full px-3 py-1 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span><i class="ri-home-2-line" style="font-size: 22px;"></i></span>
+            </a>
+            <a href="#"
+                class="lg:inline-flex lg:w-auto w-full px-3 py-1 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span><i class="ri-chat-3-line" style="font-size: 22px;"></i></span>
+            </a>
+            <a href="#"
+                class="lg:inline-flex lg:w-auto w-full px-3 py-1 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span><i class="ri-notification-4-line" style="font-size: 22px;"></i></span>
+            </a>
+            <a href="#"
+                class="lg:inline-flex lg:w-auto w-full px-3 py-1 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span>
+                    <a href="/my-profile">My Profile</a>
+                </span>
+            </a>
+            <div class="flex rounded-md border border-[#323b47] overflow-hidden max-w-md mx-auto font-[sans-serif]">
+                <input type="email" placeholder="Search Users"
+                    class="w-full text-center outline-none bg-[transparent] text-gray-600 text-sm px-1 py-1" />
+                <button type='button' class="flex items-center justify-center bg-[#253141] px-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+                        class="fill-white">
+                        <path
+                            d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <a href="#"
+                class="lg:inline-flex lg:w-auto w-full px-3 py-1 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span><i class="ri-logout-box-r-line" style="font-size: 22px;"></i></span>
+            </a>
+        </div>
+    </div>
+</nav>

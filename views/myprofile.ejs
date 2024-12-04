@@ -29,7 +29,7 @@
 
 <body>
  
-    <nav class="flex items-center bg-gray-800 p-3 flex-wrap">
+    <!-- <nav class="flex items-center bg-gray-800 p-3 flex-wrap">
         <a href="#" class="p-2 mr-4 inline-flex items-center">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-current text-white h-8 w-8 mr-2">
                 <path
@@ -81,8 +81,8 @@
                 </a>
             </div>
         </div>
-    </nav>
-
+    </nav> -->
+<%- include('partials/signedNav.ejs')%>
 
 <section class="w-full overflow-hidden dark:bg-gray-900">
     <div class="flex flex-col">
@@ -99,10 +99,14 @@
             <!-- FullName -->
             <h1
                 class="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
-              <%= user.fname %></h1>
+            <%= user.fname  %> <%= user.lname  %></h1>
 
         </div>
-
+<!-- <% if (!user.address || user.address.trim() === "") { %>
+<p>No address available</p>
+<% } else { %>
+<p><%= user.address %></p>
+<% } %> -->
         <div
             class="xl:w-[80%] lg:w-[90%] md:w-[90%] sm:w-[92%] xs:w-[90%] mx-auto flex flex-col gap-4 items-center relative lg:-top-8 md:-top-6 sm:-top-4 xs:-top-4">
             <!-- Description -->
@@ -115,51 +119,73 @@
 
             <!-- Detail -->
             <div class="w-full my-auto py-6 flex flex-col justify-center gap-2">
-                <div class="w-full flex sm:flex-row xs:flex-col gap-2 justify-center">
-                    <div class="w-full">
-                        <dl class="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                            <div class="flex flex-col pb-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">First Name</dt>
-                                <dd class="text-lg font-semibold">Samuel</dd>
-                            </div>
-                            <div class="flex flex-col py-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Last Name</dt>
-                                <dd class="text-lg font-semibold">Abera</dd>
-                            </div>
-                            <div class="flex flex-col py-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Date Of Birth</dt>
-                                <dd class="text-lg font-semibold">21/02/1997</dd>
-                            </div>
-                            <div class="flex flex-col py-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Gender</dt>
-                                <dd class="text-lg font-semibold">Male</dd>
-                            </div>
-                        </dl>
-                    </div>
-                    <div class="w-full">
-                        <dl class="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                            <div class="flex flex-col pb-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Location</dt>
-                                <dd class="text-lg font-semibold">Ethiopia, Addis Ababa</dd>
-                            </div>
-
-                            <div class="flex flex-col pt-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Phone Number</dt>
-                                <dd class="text-lg font-semibold">+251913****30</dd>
-                            </div>
-                            <div class="flex flex-col pt-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Email</dt>
-                                <dd class="text-lg font-semibold">samuelabera87@gmail.com</dd>
-                            </div>
-
-                            <div class="flex flex-col pt-3">
-                                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Website</dt>
-                                <dd class="text-lg font-semibold hover:text-blue-500"><a
-                                        href="https://techakim.com">https://www.teclick.com</a></dd>
-                            </div>
-                        </dl>
-                    </div>
+            <% if (!user.address || user.address.trim() === "") { %>
+        <a href="/profile/edit"
+            class="relative inline-flex mx-auto items-center justify-start py-3 pl-4 pr-12 overflow-hidden font-semibold text-indigo-600 transition-all duration-150 ease-in-out rounded hover:pl-10 hover:pr-6 bg-gray-50 group">
+            <span
+                class="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-indigo-600 group-hover:h-full"></span>
+            <span class="absolute right-0 pr-4 duration-200 ease-out group-hover:translate-x-12">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </span>
+            <span class="absolute left-0 pl-2.5 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </span>
+            <span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Add More Details <i class="ri-info-card-line"></i></span>
+        </a>
+        <!-- IF FILLED ALL DETAILES THEN SHOW THIS  -->
+            <% } else { %>
+            <div class="w-full flex sm:flex-row xs:flex-col gap-2 justify-center">
+                <div class="w-full">
+                    <dl class="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                        <div class="flex flex-col pb-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">First Name</dt>
+                            <dd class="text-lg font-semibold"><%= user.fname %></dd>
+                        </div>
+                        <div class="flex flex-col py-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Last Name</dt>
+                            <dd class="text-lg font-semibold"><%= user.lname%></dd>
+                        </div>
+                        <div class="flex flex-col py-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Date Of Birth</dt>
+                            <dd class="text-lg font-semibold">21/02/1997</dd>
+                        </div>
+                        <div class="flex flex-col py-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Gender</dt>
+                            <dd class="text-lg font-semibold">Male</dd>
+                        </div>
+                    </dl>
                 </div>
+                <div class="w-full">
+                    <dl class="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
+                        <div class="flex flex-col pb-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Location</dt>
+                            <dd class="text-lg font-semibold">Ethiopia, Addis Ababa</dd>
+                        </div>
+            
+                        <div class="flex flex-col pt-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Phone Number</dt>
+                            <dd class="text-lg font-semibold">+251913****30</dd>
+                        </div>
+                        <div class="flex flex-col pt-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Email</dt>
+                            <dd class="text-lg font-semibold">samuelabera87@gmail.com</dd>
+                        </div>
+            
+                        <div class="flex flex-col pt-3">
+                            <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Website</dt>
+                            <dd class="text-lg font-semibold hover:text-blue-500"><a
+                                    href="https://techakim.com">https://www.teclick.com</a></dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+            <% } %>
 
                 <div class="my-10 lg:w-[70%] md:h-[14rem] xs:w-full xs:h-[10rem]">
                     <!--  -->

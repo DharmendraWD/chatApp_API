@@ -10,8 +10,8 @@ const Admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 
 
-router.get('/',  auth, (req, res) => {
-   return res.render("homepage")
+router.get('/', auth,(req, res) => {
+    return res.render("homepage")
 })
 
 router.get("/register", async (req, res) => {
@@ -67,7 +67,38 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+//logout| FIREBASE
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    return res.redirect('/');
+});
 
+// register | FIREBASE
+
+router.post('/register', async (req, res) => {
+    const { fname, lname, email, password, sex, dob } = req.body;
+
+    bcrypt.hash(password, saltRounds, async function (err, hash) {
+        try {
+            // Interact with Firestore
+            const userRef = admin.firestore().collection('users').doc();
+
+            await userRef.set({
+                fname: fname,
+                lname: lname,
+                email: email,
+                password: hash,
+            });
+
+            // res.status(201).json({ message: 'User registered successfully' });
+            return res.redirect('/login');
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
+
+});
 
 // get all registered users api | FIREBASE
 router.get("/register", async (req, res) => {
