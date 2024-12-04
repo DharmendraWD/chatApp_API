@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 
 
 router.get('/',  auth, (req, res) => {
-    res.render("homepage")
+   return res.render("homepage")
 })
 
 router.get("/register", async (req, res) => {
