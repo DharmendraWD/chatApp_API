@@ -2,7 +2,7 @@
   "name": "backend",
   "main": "api/index.js",
   "scripts": {
-    "start": "bun run index.js"
+      "start": "node app.js"
   },
   "devDependencies": {
     "@types/bun": "latest"
