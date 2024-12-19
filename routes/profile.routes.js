@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 const db = Admin.firestore();
 
-router.get("/edit", auth, async (req, res) => {
+router.get("/edit/:id", auth, async (req, res) => {
     // const user = req.user;
 return res.render("editInfo");
     // res.render("profile", { user });
@@ -46,5 +46,30 @@ router.put("/edit", async (req, res) => {
     }
 });
 
+
+router.get("/", async (req, res)=>{
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userDoc = await admin.firestore().collection('users').doc(decoded.userId).get();
+    // const loggedInUser = userDoc.data();
+    let loggedInUserId = decoded.userId
+let userId = loggedInUserId;
+
+
+try {
+    const userDoc = await db.collection('users').doc(userId).get();  // Fetch user by ID from Firestore
+
+    if (!userDoc.exists) {
+        res.status(404).send('User not found');
+        return;
+    }
+
+    const user = userDoc.data();
+    res.render('myprofile', { user, loggedInUserId, userId });
+} catch (error) {
+    res.status(500).send('Error fetching user details from Firestore');
+    }
+
+})
 
 module.exports = router;

@@ -1,5 +1,4 @@
-const auth =  require("../middlewares/auth.js");
-
+const auth = require("../middlewares/auth.js");
 const express = require("express");
 const router = express.Router();
 const user = require("../models/user.model.js");
@@ -9,16 +8,36 @@ const admin = require('../firebase.js');
 const Admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 
+const db = Admin.firestore();
 
-router.get('/', auth,(req, res) => {
-    return res.render("homepage")
+router.get('/', auth, async (req, res) => {
+    const usersRef = db.collection('users');
+    const snapshot = await usersRef.get();  // Get all documents in 'users' collection
+
+    if (snapshot.empty) {
+        console.log('No users found.');
+        return;
+    }
+
+    const users = [];
+    snapshot.forEach(doc => {
+        const userData = doc.data();  // Get data for each document
+        userData.id = doc.id;         // Optionally include the document ID
+        users.push(userData);
+    });
+
+
+
+
+
+    return res.render("homepage", { users });
 })
 
 router.get("/register", async (req, res) => {
-   return res.render("register")
+    return res.render("register")
 });
 router.get("/login", async (req, res) => {
- return  res.render("login")
+    return res.render("login")
 });
 
 // login \ firebase 
@@ -46,7 +65,7 @@ router.post('/login', async (req, res) => {
 
             if (result) {
                 // Password matches, login success
-                    
+
                 const token = jwt.sign({
                     userId: userDoc.id,
                     email: userDoc.email,
@@ -129,7 +148,32 @@ router.get('/my-profile', auth, async (req, res) => {
     const userDoc = await admin.firestore().collection('users').doc(decoded.userId).get();
     const user = userDoc.data();
 
-    console.log(user)
     res.render("myprofile", { user: user })
 })
+
+// individual user's profile 
+router.get('/profile/:id', async (req, res) => {
+
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userDoc = await admin.firestore().collection('users').doc(decoded.userId).get();
+    // const loggedInUser = userDoc.data();
+    let loggedInUserId = decoded.userId
+
+
+    const userId = req.params.id;
+    try {
+        const userDoc = await db.collection('users').doc(userId).get();  // Fetch user by ID from Firestore
+
+        if (!userDoc.exists) {
+            res.status(404).send('User not found');
+            return;
+        }
+
+        const user = userDoc.data();
+        res.render('myprofile', { user, loggedInUserId, userId });
+    } catch (error) {
+        res.status(500).send('Error fetching user details from Firestore');
+    }
+});
 module.exports = router;

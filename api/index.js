@@ -8,6 +8,7 @@ const path = require("path");
 const userRouter = require("../routes/api.routes"); // Routes for user registration
 const EJSuserRoutes = require("../routes/user.routes"); // Routes for user-related actions (login, register)
 const profileRoutes = require("../routes/profile.routes"); // Routes for the user's profile
+const messageRoutes = require("../routes/messages.routes")
 const methodOverride = require('method-override');
 // Connect to the database
 connectDB();
@@ -33,6 +34,9 @@ app.use((req, res, next) => {
 app.use("/api/users", userRouter); // User-related API routes
 app.use("/", EJSuserRoutes); // Routes for handling login, register, etc.
 app.use("/profile", profileRoutes); // Profile routes
+app.use("/message", messageRoutes)
+
+
 
 // Homepage route (renders nav.ejs)
 app.get("/", (req, res) => {
