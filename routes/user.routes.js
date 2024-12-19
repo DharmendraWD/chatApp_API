@@ -11,6 +11,13 @@ const jwt = require('jsonwebtoken');
 const db = Admin.firestore();
 
 router.get('/', auth, async (req, res) => {
+    // getting logged in user id 
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userDoc = await admin.firestore().collection('users').doc(decoded.userId).get();
+    let loggedInUserId = decoded.userId
+
+
     const usersRef = db.collection('users');
     const snapshot = await usersRef.get();  // Get all documents in 'users' collection
 
@@ -30,7 +37,7 @@ router.get('/', auth, async (req, res) => {
 
 
 
-    return res.render("homepage", { users });
+    return res.render("homepage", { users,loggedInUserId });
 })
 
 router.get("/register", async (req, res) => {

@@ -69,7 +69,12 @@
  <div class="flex">
     <% users.forEach(user => { %>
         <a href="/profile/<%= user.id %>" class="circle">
-          <img src="<%= user.avatarUrl %>" alt="<%= user.name %>" />
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqafzhnwwYzuOTjTlaYMeQ7hxQLy_Wq8dnQg&s" alt="">
+          <p class="absolute top-[87%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#5f267b] rounded-lg px-[5px] z-50 text-white text-[14px] w-fit max-w-[67%] overflow-hidden text-center">
+            <%= user.id === loggedInUserId ? 'you' : user.fname %>
+          </p>
+          
+
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="enable-background:new -580 439 577.9 194;" xml:space="preserve">  
             <circle cx="50" cy="50" r="40" />
           </svg>

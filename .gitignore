@@ -59,8 +59,7 @@ build/Release
 node_modules/
 jspm_packages/
 .env
-chatapp-6d61b-firebase-adminsdk-n7o6w-297efca737.json
-chatapp-6d61b-firebase-adminsdk-n7o6w-f44d916079.json
+
 # Snowpack dependency directory (https://snowpack.dev/)
 
 web_modules/
@@ -72,7 +71,7 @@ web_modules/
 # Optional npm cache directory
 
 .npm
-
+chatapp-6d61b-firebase-adminsdk-n7o6w-e11b7130df.json
 # Optional eslint cache
 
 .eslintcache

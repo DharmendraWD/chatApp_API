@@ -25,7 +25,7 @@
 // const admin = require('firebase-admin');
 
 const admin = require('firebase-admin');
-const serviceAccount = require('./chatapp-6d61b-firebase-adminsdk-n7o6w-f44d916079.json');
+const serviceAccount = require('./chatapp-6d61b-firebase-adminsdk-n7o6w-e11b7130df.json');
  
 // Initialize Firebase Admin SDK
 admin.initializeApp({
